@@ -1,5 +1,6 @@
 import './pages/index.css';
 import { initialCards } from '../src/cards.js';
+import avatar from './images/avatar.jpg';
 
 const cardTemplate = document.querySelector('#card-template').content;
 const cardElement = cardTemplate.querySelector('.card');
