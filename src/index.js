@@ -1,40 +1,51 @@
-import './pages/index.css';
-import { initialCards, createNewCard } from './components/cards.js';
-import { openModal, closeModal } from './components/modal.js';
+import "./pages/index.css";
 
-const cardList = document.querySelector('.places__list');
-const profileAddButton = document.querySelector('.profile__add-button');
-const profileEditButton = document.querySelector('.profile__edit-button');
-const popupTypeEdit = document.querySelector('.popup_type_edit');
-const popupTypeNewCard = document.querySelector('.popup_type_new-card');
+import {
+  initialCards,
+  createNewCard,
+  handleLikeButton,
+} from "./components/cards.js";
+
+import {
+  openModal,
+  openCardModal,
+  closeModal,
+  checkClickOverlay,
+  openEditProfileModal,
+  handleAddCardFormSubmit,
+  handleEditProfileFormSubmit,
+} from "./components/modal.js";
+
+const cardList = document.querySelector(".places__list");
+const cardAddButton = document.querySelector(".profile__add-button");
+const profileEditButton = document.querySelector(".profile__edit-button");
+const places = document.querySelector(".places"); // область расположения всех карточек
+
+const popupTypeEdit = document.querySelector(".popup_type_edit");
 const popupTypeImage = document.querySelector('.popup_type_image');
-const places = document.querySelector('.places');
+const popupEditForm = popupTypeEdit.querySelector(".popup__form");
+const popupTypeNewCard = document.querySelector(".popup_type_new-card");
+const popupNewCardForm = popupTypeNewCard.querySelector(".popup__form");
 
-initialCards.forEach((item) => cardList.append(createNewCard(item.name, item.link)));
+initialCards.forEach((item) =>
+  cardList.append(createNewCard(item.name, item.link))
+);
 
-document.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('popup')) {
-        closeModal(evt.target);
-    }
-})
+document.querySelectorAll(".popup").forEach((item) => {
+  item.querySelector(".popup__close").addEventListener("click", () => closeModal(item));
+  item.addEventListener("mousedown", checkClickOverlay);
+});
 
-places.addEventListener('click', (evt) => {
-    if (evt.target.classList.contains('card__image')) {
-        const popupImage = popupTypeImage.querySelector('.popup__image');
-        const popupCaption = popupTypeImage.querySelector('.popup__caption');
-        const cardName = evt.target.closest('.card').querySelector('.card__title').textContent;
+places.addEventListener("click", (evt) => openCardModal(evt, popupTypeImage));
 
-        popupImage.setAttribute('src', evt.target.getAttribute('src'));
-        popupImage.setAttribute('alt', cardName);
-        popupCaption.textContent = cardName;
-        openModal(popupTypeImage);
-    }
-})
+places.addEventListener("click", handleLikeButton);
 
-profileEditButton.addEventListener('click', () => {
-    openModal(popupTypeEdit);
-})
+profileEditButton.addEventListener("click", () => openEditProfileModal(popupTypeEdit));
 
-profileAddButton.addEventListener('click', () => {
-    openModal(popupTypeNewCard);
-})
+popupEditForm.addEventListener("submit", (evt) => handleEditProfileFormSubmit(evt, popupTypeEdit));
+
+popupNewCardForm.addEventListener("submit", (evt) => handleAddCardFormSubmit(evt, popupTypeNewCard, cardList));
+
+cardAddButton.addEventListener("click", () => {
+  openModal(popupTypeNewCard);
+});
