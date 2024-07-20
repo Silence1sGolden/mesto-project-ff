@@ -17,7 +17,7 @@ const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 const popupNewCardForm = document.forms['new-place'];
 
 initialCards.forEach((item) =>
-  cardList.append(createNewCard(item.name, item.link, deleteCard, openCardFunc, handleLikeButton))
+  cardList.append(createNewCard(item.name, item.link, deleteCard, openCardPopup, handleLikeButton))
 );
 
 profileEditButton.addEventListener("click", () => {
@@ -32,9 +32,9 @@ cardAddButton.addEventListener("click", () => {
 });
 
 popupNewCardForm.addEventListener("submit", handleNewCardFormSubmit);
-popupEditForm.addEventListener("submit", handleEditFormSubmit);
+popupEditForm.addEventListener("submit", handleProfileEditFormSubmit);
 
-function openCardFunc(evt) {
+function openCardPopup(evt) {
   if (evt.target.classList.contains("card__image")) {
     const card = evt.target.closest('.card');
     const cardTitle = card.querySelector('.card__title').textContent;
@@ -48,7 +48,7 @@ function openCardFunc(evt) {
   }
 }
 
-function handleEditFormSubmit(evt) {
+function handleProfileEditFormSubmit(evt) {
   evt.preventDefault();
 
   if (evt.target.closest('.popup').classList.contains('popup_type_edit')) {
@@ -65,7 +65,7 @@ function handleNewCardFormSubmit(evt) {
   if (evt.target.closest('.popup').classList.contains('popup_type_new-card')) {
     const newCardName = popupNewCardForm['place-name'].value;
     const newCardURL = popupNewCardForm.link.value;
-    const newCard = createNewCard(newCardName, newCardURL, deleteCard, openCardFunc, handleLikeButton);
+    const newCard = createNewCard(newCardName, newCardURL, deleteCard, openCardPopup, handleLikeButton);
     
     cardList.prepend(newCard);
     popupNewCardForm.reset();
