@@ -1,0 +1,8 @@
+@import url('./__error_visible/popup__error_visible.css');
+
+.popup__error {
+    display: none;
+    font-size: 12px;
+    font-weight: 400;
+    color: #FF0000;
+}
