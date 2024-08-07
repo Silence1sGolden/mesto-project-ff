@@ -1,4 +1,5 @@
 .profile__image {
+  position: relative;
   width: 120px;
   height: 120px;
   -webkit-border-radius: 50%;
@@ -7,6 +8,25 @@
   background-size: cover;
   background-position: center;
   margin: 0 29px 0 0;
+}
+
+.profile__image::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  display: none;
+  z-index: 2;
+  block-size: 100%;
+  inline-size: 100%;
+  backdrop-filter: brightness(.2);
+  background-image: url('../../../images/pencil.png');
+  background-repeat: no-repeat;
+  background-position: center;
+}
+
+.profile__image:hover:before {
+  cursor: pointer;
+  display: block;
 }
 
 @media screen and (max-width: 740px) {

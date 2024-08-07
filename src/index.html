@@ -58,6 +58,26 @@
       </form>
     </div>
   </div>
+  <div class="popup popup_type_change-profile-photo popup_is-animated">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Обновить аватар</h3>
+      <form class="popup__form" name="change-profile-photo" novalidate>
+        <input type="url" name="link" id="type_url" class="popup__input popup__input_type_url" placeholder="Ссылка на картинку" required data-error-msg="Разрешены только латинские, кириллические буквы, знаки дефиса и пробелы">
+        <span class="popup__error type_url-error"></span>
+        <button type="submit" class="button popup__button">Сохранить</button>
+      </form>
+    </div>
+  </div>
+  <div class="popup popup_type_card-delete popup_is-animated">
+    <div class="popup__content">
+      <button type="button" class="popup__close"></button>
+      <h3 class="popup__title">Вы уверены?</h3>
+      <form class="popup__form" name="delete-card">
+        <button type="submit" class="button popup__button">Да</button>
+      </form>
+    </div>
+  </div>
   <div class="popup popup_type_image popup_is-animated">
     <div class="popup__content popup__content_content_image">
       <button type="button" class="popup__close"></button>
@@ -74,7 +94,10 @@
     <div class="card__description">
       <h2 class="card__title">
       </h2>
-      <button type="button" class="card__like-button"></button>
+      <div class="card__like">
+        <button type="button" class="card__like-button"></button>
+        <span class="card__like-counter"></span>
+      </div>
     </div>
   </li>
 </template>

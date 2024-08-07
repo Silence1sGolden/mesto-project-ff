@@ -44,12 +44,13 @@ function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
       }
 }
 
-function clearValidation(form) {
-    const inputElements = Array.from(form.querySelectorAll('.popup__form'));
+function clearValidation(form, validationConfig = null) {
+    const inputElements = Array.from(form.querySelectorAll('.popup__input'));
     const errorElements = Array.from(form.querySelectorAll('.popup__error'));
     const button = form.querySelector('.popup__button');
     inputElements.forEach((elem) => {
         elem.classList.remove('popup__input_type_error');
+        elem.value = '';
     })
     errorElements.forEach((elem) => {
         elem.classList.remove('popup__error_visible');
