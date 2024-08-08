@@ -1,19 +1,23 @@
 function openModal(target) {
-  target.querySelector(".popup__close").addEventListener("click", clickCloseModalButton);
+  target
+    .querySelector(".popup__close")
+    .addEventListener("click", clickCloseModalButton);
   target.addEventListener("mousedown", checkClickOverlay);
   document.addEventListener("keydown", checkPressEscape);
   target.classList.toggle("popup_is-opened");
 }
 
 function closeModal(target) {
-  target.querySelector(".popup__close").removeEventListener("click", clickCloseModalButton);
+  target
+    .querySelector(".popup__close")
+    .removeEventListener("click", clickCloseModalButton);
   target.removeEventListener("mousedown", checkClickOverlay);
   document.removeEventListener("keydown", checkPressEscape);
   target.classList.toggle("popup_is-opened");
 }
 
 function clickCloseModalButton(evt) {
-  closeModal(evt.target.closest('.popup'));
+  closeModal(evt.target.closest(".popup"));
 }
 
 function checkClickOverlay(evt) {
@@ -24,11 +28,8 @@ function checkClickOverlay(evt) {
 
 function checkPressEscape(evt) {
   if (evt.key === "Escape") {
-    closeModal(document.querySelector('.popup_is-opened'));
+    closeModal(document.querySelector(".popup_is-opened"));
   }
 }
 
-export {
-  openModal,
-  closeModal
-};
+export { openModal, closeModal };
