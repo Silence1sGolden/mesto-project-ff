@@ -1,3 +1,17 @@
-# Проектная работа Mesto
+# Проектная работа [Mesto](https://silence1sgolden.github.io/mesto-project-ff/)
 
-https://github.com/Silence1sGolden/mesto-project-ff.git
+## Что такое Mesto?
+
+**Mesto** это одностраничный сайт, на котором можно делиться фотографиями разных мест с другими пользователями в сети интернет.
+
+## Что вы можете делать с **Mesto**?
+
+1. Публиковать свои фотографии;
+2. Лайкать свои или чужие опубликованные фотографии;
+3. Удалять свои фотографии (если так надо);
+4. Редактировать профиль.
+
+## Ссылки
+
+- [Сайт](https://silence1sgolden.github.io/mesto-project-ff/)
+- [Репозиторий](https://github.com/Silence1sGolden/mesto-project-ff.git)
