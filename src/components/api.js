@@ -6,7 +6,7 @@ const config = {
   },
 };
 
-const reqGetUserInformation = () => {
+const requestGetUserInformation = () => {
   return fetch(`${config.baseURL}/users/me`, {
     method: "GET",
     headers: config.headers,
@@ -17,13 +17,12 @@ const reqGetUserInformation = () => {
       } else {
         Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    })
-    .catch((err) => {
+    }).catch((err) => {
       console.log(err);
-    });
+    })
 };
 
-const reqGetCardsInformation = () => {
+const requestGetCardsInformation = () => {
   return fetch(`${config.baseURL}/cards`, {
     method: "GET",
     headers: config.headers,
@@ -34,13 +33,12 @@ const reqGetCardsInformation = () => {
       } else {
         Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    })
-    .catch((err) => {
+    }).catch((err) => {
       console.log(err);
-    });
+    })
 };
 
-const reqChangeProfile = (name, about) => {
+const requestChangeProfile = (name, about) => {
   return fetch(`${config.baseURL}/users/me`, {
     method: "PATCH",
     headers: config.headers,
@@ -55,13 +53,12 @@ const reqChangeProfile = (name, about) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    })
-    .catch((err) => {
+    }).catch((err) => {
       console.log(err);
-    });
+    })
 };
 
-const reqAddNewCard = (name, link) => {
+const requestAddNewCard = (name, link) => {
   return fetch(`${config.baseURL}/cards`, {
     method: "POST",
     headers: config.headers,
@@ -76,73 +73,85 @@ const reqAddNewCard = (name, link) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    })
-    .catch((err) => {
+    }).catch((err) => {
       console.log(err);
-    });
+    })
 };
 
-const reqDeleteCard = (cardId) => {
-    return fetch(`${config.baseURL}/cards/${cardId}`, {
-        method: 'DELETE',
-        headers: config.headers
-    }).then((res) => {
-        if (res.ok) {
-            return res;
-        } else {
-            return Promise.reject(`Произошла ошибка: ${res.status}`)
-        }
+const requestDeleteCard = (cardId) => {
+  return fetch(`${config.baseURL}/cards/${cardId}`, {
+    method: "DELETE",
+    headers: config.headers,
+  })
+    .then((res) => {
+      if (res.ok) {
+        return res;
+      } else {
+        return Promise.reject(`Произошла ошибка: ${res.status}`);
+      }
     }).catch((err) => {
-        console.log(err);
+      console.log(err);
     })
-}
+};
 
-const reqLikeCard = (cardId) => {
+const requestLikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
-    method: 'PUT',
-    headers: config.headers
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Произошла ошибка: ${res.status}`);
-    }
-  }).catch((err) => {
-    console.log(err);
+    method: "PUT",
+    headers: config.headers,
   })
-}
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Произошла ошибка: ${res.status}`);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+};
 
-const reqUnlikeCard = (cardId) => {
+const requestUnlikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
-    method: 'DELETE',
-    headers: config.headers
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Произошла ошибка: ${res.status}`);
-    }
-  }).catch((err) => {
-    console.log(err);
+    method: "DELETE",
+    headers: config.headers,
   })
-}
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Произошла ошибка: ${res.status}`);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+};
 
-const reqChangePhoto = (link) => {
+const requestChangePhoto = (link) => {
   return fetch(`${config.baseURL}/users/me/avatar`, {
-    method: 'PATCH',
+    method: "PATCH",
     headers: config.headers,
     body: JSON.stringify({
-      avatar: link
-    })
-  }).then((res) => {
-    if (res.ok) {
-      return res.json();
-    } else {
-      return Promise.reject(`Произошла ошибка: ${res.status}`);
-    }
-  }).catch((err) => {
-    console.log(err);
+      avatar: link,
+    }),
   })
-}
+    .then((res) => {
+      if (res.ok) {
+        return res.json();
+      } else {
+        return Promise.reject(`Произошла ошибка: ${res.status}`);
+      }
+    }).catch((err) => {
+      console.log(err);
+    })
+};
 
-export { reqGetUserInformation, reqGetCardsInformation, reqChangeProfile, reqAddNewCard, reqDeleteCard, reqLikeCard, reqUnlikeCard, reqChangePhoto };
+export {
+  requestGetUserInformation,
+  requestGetCardsInformation,
+  requestChangeProfile,
+  requestAddNewCard,
+  requestDeleteCard,
+  requestLikeCard,
+  requestUnlikeCard,
+  requestChangePhoto,
+};
