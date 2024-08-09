@@ -17,9 +17,10 @@ const requestGetUserInformation = () => {
       } else {
         Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestGetCardsInformation = () => {
@@ -33,9 +34,10 @@ const requestGetCardsInformation = () => {
       } else {
         Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestChangeProfile = (name, about) => {
@@ -53,9 +55,10 @@ const requestChangeProfile = (name, about) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestAddNewCard = (name, link) => {
@@ -73,9 +76,10 @@ const requestAddNewCard = (name, link) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestDeleteCard = (cardId) => {
@@ -85,13 +89,14 @@ const requestDeleteCard = (cardId) => {
   })
     .then((res) => {
       if (res.ok) {
-        return res;
+        return res.json();
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestLikeCard = (cardId) => {
@@ -105,9 +110,10 @@ const requestLikeCard = (cardId) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestUnlikeCard = (cardId) => {
@@ -121,9 +127,10 @@ const requestUnlikeCard = (cardId) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
 
 const requestChangePhoto = (link) => {
@@ -140,10 +147,15 @@ const requestChangePhoto = (link) => {
       } else {
         return Promise.reject(`Произошла ошибка: ${res.status}`);
       }
-    }).catch((err) => {
-      console.log(err);
     })
+    .catch((err) => {
+      writeError(err);
+    });
 };
+
+function writeError(err) {
+  console.log(err);
+}
 
 export {
   requestGetUserInformation,
