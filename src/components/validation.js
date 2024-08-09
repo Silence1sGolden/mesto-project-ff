@@ -12,7 +12,11 @@ function enableValidation(configuration) {
   forms.forEach((form) => {
     const inputList = Array.from(form.querySelectorAll(inputSelector));
 
-    toggleButtonState(inputList, form.querySelector(submitButtonSelector), inactiveButtonClass);
+    toggleButtonState(
+      inputList,
+      form.querySelector(submitButtonSelector),
+      inactiveButtonClass
+    );
     inputList.forEach((input) => {
       input.addEventListener("input", () => {
         isValid(form, input, inputErrorClass, errorClass);
@@ -61,22 +65,30 @@ function toggleButtonState(inputList, buttonElement, inactiveButtonClass) {
   }
 }
 
-function clearValidation(form, validationConfig = false) {
-  if (!validationConfig) {
-    const inputElements = Array.from(form.querySelectorAll(".popup__input"));
-    const errorElements = Array.from(form.querySelectorAll(".popup__error"));
-    inputElements.forEach((elem) => {
-      elem.classList.remove("popup__input_type_error");
-      elem.value = "";
-    });
-    errorElements.forEach((elem) => {
-      elem.classList.remove("popup__error_visible");
-      elem.textContent = "";
-    });
-    const button = form.querySelector(".popup__button");
-    button.disabled = true;
-    button.classList.add("popup__button_disabled");
-  }
+function clearValidation(form, validationConfig) {
+  const {
+    inputSelector,
+    submitButtonSelector,
+    inactiveButtonClass,
+    inputErrorClass,
+    errorClass,
+    errorSelector,
+  } = validationConfig;
+
+  const inputElements = Array.from(form.querySelectorAll(inputSelector));
+  const errorElements = Array.from(form.querySelectorAll(errorSelector));
+  const button = form.querySelector(submitButtonSelector);
+
+  inputElements.forEach((elem) => {
+    elem.classList.remove(inputErrorClass);
+    elem.value = "";
+  });
+  errorElements.forEach((elem) => {
+    elem.classList.remove(errorClass);
+    elem.textContent = "";
+  });
+  button.disabled = true;
+  button.classList.add(inactiveButtonClass);
 }
 
 function showInputError(

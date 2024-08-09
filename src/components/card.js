@@ -1,4 +1,4 @@
-import { requestGetCardsInformation, requestLikeCard, requestUnlikeCard } from "./api";
+import { requestLikeCard, requestUnlikeCard } from "./api";
 
 function createNewCard(
   cardData,
@@ -37,7 +37,9 @@ function createNewCard(
   cardImage.setAttribute("alt", name);
   cardTitle.textContent = name;
   cardImage.addEventListener("click", openCardFunc);
-  cardLikeButton.addEventListener("click", likeCardFunc);
+  cardLikeButton.addEventListener("click", () => {
+    likeCardFunc(cardLikeButton, cardData._id);
+  });
 
   likeCounter.textContent = likes.length;
 
@@ -48,43 +50,32 @@ function deleteCard(card) {
   card.remove();
 }
 
-function handleLikeButton(evt) {
-  const cardList = Array.from(document.querySelectorAll(".card"));
-  const cardIndex = cardList.indexOf(evt.target.closest(".card"));
-  const button = evt.target;
-
-  requestGetCardsInformation()
-    .then((serverCardList) => {
-      if (cardList.length == serverCardList.length) {
-        return serverCardList[cardIndex]._id;
-      } else {
-        return Promise.reject(
-          "Данные сервера и сайта отличаются, пожалуйста, перезагрузите страницу."
-        );
-      }
-    })
-    .then((cardId) => {
-      if (button.classList.contains("card__like-button_is-active")) {
-        requestUnlikeCard(cardId).then((cardData) => {
-          button
-            .closest(".card__like")
-            .querySelector(".card__like-counter").textContent =
-            cardData.likes.length;
-          button.classList.remove("card__like-button_is-active");
-        });
-      } else {
-        requestLikeCard(cardId).then((cardData) => {
-          button
-            .closest(".card__like")
-            .querySelector(".card__like-counter").textContent =
-            cardData.likes.length;
-          button.classList.add("card__like-button_is-active");
-        });
-      }
-    })
-    .catch((err) => {
-      console.log(err);
-    });
+function handleLikeButton(cardLikeButton, cardId) {
+  if (cardLikeButton.classList.contains("card__like-button_is-active")) {
+    requestUnlikeCard(cardId)
+      .then((cardData) => {
+        cardLikeButton
+          .closest(".card__like")
+          .querySelector(".card__like-counter").textContent =
+          cardData.likes.length;
+        cardLikeButton.classList.remove("card__like-button_is-active");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  } else {
+    requestLikeCard(cardId)
+      .then((cardData) => {
+        cardLikeButton
+          .closest(".card__like")
+          .querySelector(".card__like-counter").textContent =
+          cardData.likes.length;
+        cardLikeButton.classList.add("card__like-button_is-active");
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 }
 
 export { createNewCard, handleLikeButton, deleteCard };
