@@ -1,4 +1,4 @@
-import { requestGetCardsInformation, requestLikeCard, requestUnlikeCard } from "./api";
+import { requestLikeCard, requestUnlikeCard } from "./api";
 
 function createNewCard(
   cardData,
@@ -7,7 +7,7 @@ function createNewCard(
   openCardFunc,
   likeCardFunc
 ) {
-  const { name, link, likes } = cardData;
+  const { name, link, likes, _id } = cardData;
   const ownerCardId = cardData.owner._id;
 
   const cardTemplate = document.querySelector("#card-template").content;
@@ -40,7 +40,7 @@ function createNewCard(
   cardTitle.textContent = name;
   cardImage.addEventListener("click", openCardFunc);
   cardLikeButton.addEventListener("click", () => {
-    likeCardFunc(cardLikeButton, cardData._id);
+    likeCardFunc(cardLikeButton, _id);
   });
 
   likeCounter.textContent = likes.length;

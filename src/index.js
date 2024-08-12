@@ -39,7 +39,7 @@ const popupEditForm = document.forms["edit-profile"];
 const popupTypeNewCard = document.querySelector(".popup_type_new-card");
 const popupNewCardForm = document.forms["new-place"];
 const popupDeleteCard = document.querySelector(".popup_type_card-delete");
-const popupdeleteForm = document.forms["delete-card"];
+const popupDeleteForm = document.forms["delete-card"];
 const popupChangeProfilePhoto = document.querySelector(
   ".popup_type_change-profile-photo"
 );
@@ -84,6 +84,11 @@ profileImage.addEventListener("click", () => {
   openModal(popupChangeProfilePhoto);
 });
 
+popupChangeProfilePhotoForm.addEventListener(
+  "submit",
+  handleChangeProfilePhoto
+);
+
 profileEditButton.addEventListener("click", () => {
   popupEditForm.name.value = profileName.textContent;
   popupEditForm.description.value = profileDescription.textContent;
@@ -96,6 +101,7 @@ cardAddButton.addEventListener("click", () => {
 
 popupNewCardForm.addEventListener("submit", handleNewCardFormSubmit);
 popupEditForm.addEventListener("submit", handleProfileEditFormSubmit);
+popupDeleteForm.addEventListener("submit", handleDeleteCard);
 
 function openDeleteCardPopup(event, card) {
   openModal(popupDeleteCard);
@@ -105,7 +111,7 @@ function openDeleteCardPopup(event, card) {
     handleDeleteCard(card, event.target.closest(".card"));
   };
 
-  popupdeleteForm.querySelector(".popup__button").onclick = confirmDeleteCard;
+  popupDeleteForm.querySelector(".popup__button").onclick = confirmDeleteCard;
 }
 
 function openCardPopup(evt) {
@@ -125,7 +131,7 @@ function openCardPopup(evt) {
 function handleChangeProfilePhoto(evt) {
   evt.preventDefault();
 
-  toggleBootState(popupChangeProfilePhotoForm, true);
+  toggleLoadingState(popupChangeProfilePhotoForm, true);
   const link = popupChangeProfilePhotoForm.link.value;
   requestChangePhoto(link)
     .then((data) => {
@@ -137,7 +143,7 @@ function handleChangeProfilePhoto(evt) {
       writeError(err);
     })
     .finally(() => {
-      toggleBootState(popupChangeProfilePhotoForm, false);
+      toggleLoadingState(popupChangeProfilePhotoForm, false);
     });
 }
 
@@ -155,7 +161,7 @@ function handleDeleteCard(card, localCard) {
 function handleProfileEditFormSubmit(evt) {
   evt.preventDefault();
 
-  toggleBootState(popupEditForm, true);
+  toggleLoadingState(popupEditForm, true);
   requestChangeProfile(
     popupEditForm.name.value,
     popupEditForm.description.value
@@ -163,21 +169,21 @@ function handleProfileEditFormSubmit(evt) {
     .then((userData) => {
       profileName.textContent = userData.name;
       profileDescription.textContent = userData.about;
-      closeModal(evt.target.closest(".popup"));
+      closeModal(popupTypeEdit);
       clearValidation(popupTypeEdit, clearValidationConfig);
     })
     .catch((err) => {
       writeError(err);
     })
     .finally(() => {
-      toggleBootState(popupEditForm, false);
+      toggleLoadingState(popupTypeEdit, false);
     });
 }
 
 function handleNewCardFormSubmit(evt) {
   evt.preventDefault();
 
-  toggleBootState(popupNewCardForm, true);
+  toggleLoadingState(popupNewCardForm, true);
   requestAddNewCard(
     popupNewCardForm["place-name"].value,
     popupNewCardForm.link.value
@@ -191,18 +197,18 @@ function handleNewCardFormSubmit(evt) {
         handleLikeButton
       );
       placesList.prepend(newCard);
-      closeModal(evt.target.closest(".popup"));
+      closeModal(popupTypeNewCard);
       clearValidation(popupTypeNewCard, clearValidationConfig);
     })
     .catch((err) => {
       writeError(err);
     })
     .finally(() => {
-      toggleBootState(popupNewCardForm, false);
+      toggleLoadingState(popupNewCardForm, false);
     });
 }
 
-function toggleBootState(popup, state) {
+function toggleLoadingState(popup, state) {
   const button = popup.querySelector(".popup__button");
   if (state) {
     button.textContent = "Сохранение...";
