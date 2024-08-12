@@ -7,7 +7,7 @@ function createNewCard(
   openCardFunc,
   likeCardFunc
 ) {
-  const { name, link, likes } = cardData;
+  const { name, link, likes, _id } = cardData;
   const ownerCardId = cardData.owner._id;
 
   const cardTemplate = document.querySelector("#card-template").content;
@@ -28,7 +28,9 @@ function createNewCard(
   }
 
   if (userId == ownerCardId) {
-    cardDeleteButton.addEventListener("click", openDeleteCardFunc);
+    cardDeleteButton.addEventListener("click", (evt) => {
+      openDeleteCardFunc(evt, cardData);
+    });
   } else {
     cardDeleteButton.remove();
   }
@@ -38,7 +40,7 @@ function createNewCard(
   cardTitle.textContent = name;
   cardImage.addEventListener("click", openCardFunc);
   cardLikeButton.addEventListener("click", () => {
-    likeCardFunc(cardLikeButton, cardData._id);
+    likeCardFunc(cardLikeButton, _id);
   });
 
   likeCounter.textContent = likes.length;

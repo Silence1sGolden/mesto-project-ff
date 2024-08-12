@@ -6,38 +6,26 @@ const config = {
   },
 };
 
+const checkResponse = (res) => {
+  return res.ok ? res.json() : Promise.reject(`Произошла ошибка: ${res.status}`);
+};
+
 const requestGetUserInformation = () => {
   return fetch(`${config.baseURL}/users/me`, {
     method: "GET",
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestGetCardsInformation = () => {
   return fetch(`${config.baseURL}/cards`, {
     method: "GET",
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestChangeProfile = (name, about) => {
@@ -48,17 +36,9 @@ const requestChangeProfile = (name, about) => {
       name: name,
       about: about,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestAddNewCard = (name, link) => {
@@ -69,68 +49,40 @@ const requestAddNewCard = (name, link) => {
       name: name,
       link: link,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestDeleteCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    if (res.ok) {
+      return res;
+    } else {
+      return Promise.reject(`Произошла ошибка: ${res.status}`);
+    }
+  });
 };
 
 const requestLikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
     method: "PUT",
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestUnlikeCard = (cardId) => {
   return fetch(`${config.baseURL}/cards/likes/${cardId}`, {
     method: "DELETE",
     headers: config.headers,
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
 
 const requestChangePhoto = (link) => {
@@ -140,22 +92,10 @@ const requestChangePhoto = (link) => {
     body: JSON.stringify({
       avatar: link,
     }),
-  })
-    .then((res) => {
-      if (res.ok) {
-        return res.json();
-      } else {
-        return Promise.reject(`Произошла ошибка: ${res.status}`);
-      }
-    })
-    .catch((err) => {
-      writeError(err);
-    });
+  }).then((res) => {
+    return checkResponse(res);
+  });
 };
-
-function writeError(err) {
-  console.log(err);
-}
 
 export {
   requestGetUserInformation,

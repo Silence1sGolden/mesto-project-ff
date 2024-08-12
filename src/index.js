@@ -44,12 +44,6 @@ const popupChangeProfilePhoto = document.querySelector(
   ".popup_type_change-profile-photo"
 );
 const popupChangeProfilePhotoForm = document.forms["change-profile-photo"];
-const globalData = {
-  cardToDelete: "",
-};
-
-popupEditForm.name.value = profileName.textContent;
-popupEditForm.description.value = profileDescription.textContent;
 
 enableValidation({
   formSelector: ".popup__form",
@@ -60,27 +54,31 @@ enableValidation({
   errorClass: "popup__error_visible",
 });
 
-Promise.all([cardsListInfo, userInfo]).then((data) => {
-  globalData.user = data[1];
-  globalData.cards = data[0];
-  const { name, about, avatar, _id } = data[1];
-  profileName.textContent = name;
-  profileDescription.textContent = about;
-  profileImage.style.backgroundImage = `url('${avatar}')`;
-  data[0].forEach((card) => {
-    const newCard = createNewCard(
-      card,
-      _id,
-      openDeleteCardPopup,
-      openCardPopup,
-      handleLikeButton
-    );
-    placesList.append(newCard);
+Promise.all([cardsListInfo, userInfo])
+  .then((data) => {
+    const { name, about, avatar, _id } = data[1];
+    profileName.textContent = name;
+    profileDescription.textContent = about;
+    profileImage.style.backgroundImage = `url('${avatar}')`;
+    data[0].forEach((card) => {
+      const newCard = createNewCard(
+        card,
+        _id,
+        openDeleteCardPopup,
+        openCardPopup,
+        handleLikeButton
+      );
+      placesList.append(newCard);
+    });
   })
   .catch((err) => {
     writeError(err);
   });
-});
+
+popupChangeProfilePhotoForm.addEventListener(
+  "submit",
+  handleChangeProfilePhoto
+);
 
 profileImage.addEventListener("click", () => {
   openModal(popupChangeProfilePhoto);
@@ -105,11 +103,15 @@ popupNewCardForm.addEventListener("submit", handleNewCardFormSubmit);
 popupEditForm.addEventListener("submit", handleProfileEditFormSubmit);
 popupDeleteForm.addEventListener("submit", handleDeleteCard);
 
-function openDeleteCardPopup(evt) {
-  const card = evt.target.closest(".card");
-  const index = Array.from(document.querySelectorAll(".card")).indexOf(card);
-  globalData.cardToDelete = globalData.cards[index];
+function openDeleteCardPopup(event, card) {
   openModal(popupDeleteCard);
+
+  const confirmDeleteCard = (evt) => {
+    evt.preventDefault();
+    handleDeleteCard(card, event.target.closest(".card"));
+  };
+
+  popupDeleteForm.querySelector(".popup__button").onclick = confirmDeleteCard;
 }
 
 function openCardPopup(evt) {
@@ -132,9 +134,8 @@ function handleChangeProfilePhoto(evt) {
   toggleLoadingState(popupChangeProfilePhotoForm, true);
   const link = popupChangeProfilePhotoForm.link.value;
   requestChangePhoto(link)
-    .then((userData) => {
-      console.log(userData);
-      profileImage.style.backgroundImage = `url(${userData.avatar})`;
+    .then((data) => {
+      profileImage.style.backgroundImage = `URL(${data.avatar})`;
       closeModal(popupChangeProfilePhoto);
       clearValidation(popupChangeProfilePhoto, clearValidationConfig);
     })
@@ -146,15 +147,10 @@ function handleChangeProfilePhoto(evt) {
     });
 }
 
-function handleDeleteCard(evt) {
-  evt.preventDefault();
-
-  requestDeleteCard(globalData.cardToDelete._id)
+function handleDeleteCard(card, localCard) {
+  requestDeleteCard(card._id)
     .then(() => {
-      const index = globalData.cards.indexOf(globalData.cardToDelete);
-      globalData.cards.splice(index, 1);
-      deleteCard(placesList.children[index]);
-      globalData.cardToDelete = "";
+      deleteCard(localCard);
       closeModal(popupDeleteCard);
     })
     .catch((err) => {
@@ -193,15 +189,13 @@ function handleNewCardFormSubmit(evt) {
     popupNewCardForm.link.value
   )
     .then((card) => {
-      console.log(userInfo);
       const newCard = createNewCard(
         card,
-        globalData.user._id,
+        card.owner._id,
         openDeleteCardPopup,
         openCardPopup,
         handleLikeButton
       );
-      globalData.cards.unshift(card);
       placesList.prepend(newCard);
       closeModal(popupTypeNewCard);
       clearValidation(popupTypeNewCard, clearValidationConfig);
@@ -225,6 +219,6 @@ function toggleLoadingState(popup, state) {
   }
 }
 
-function writeError(error) {
-  console.log(error);
+function writeError(err) {
+  console.log(err);
 }
